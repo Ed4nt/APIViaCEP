@@ -12,7 +12,6 @@ class AppViaCEP extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       title: 'Consulta endereço',
       theme: ThemeData(
@@ -45,18 +44,61 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'CEP',
-                  ),
+
+            // CEP
+            Padding(
+              padding: EdgeInsetsGeometry.all(8),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'CEP',
                 ),
-              )
-              
+              ),
+            ),
 
+            // Logradouro
+            Padding(
+              padding: EdgeInsetsGeometry.all(8),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Logradouro',
+                ),
+              ),
+            ),
 
+            // Bairro
+            Padding(
+              padding: EdgeInsetsGeometry.all(8),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Bairro',
+                ),
+              ),
+            ),
+
+            // Cidade
+            Padding(
+              padding: EdgeInsetsGeometry.all(8),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Cidade',
+                ),
+              ),
+            ),
+
+            // UF
+            Padding(
+              padding: EdgeInsetsGeometry.all(8),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'UF',
+                ),
+              ),
+            ),
           ],
         ),
       )
