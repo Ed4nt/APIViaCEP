@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -37,7 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final cepController = TextEditingController();
 
-  
+  late int cep = 01001-000;
+  late String logradouro = 'Av. Fulano de Tal';
+  late String complemento = 'Lado ímpar';
+  late String bairro = 'Sé';
+  late String localidade = 'São Paulo';
+  late String uf = 'SP';
 
   @override
   void dispose() {
@@ -67,7 +73,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: cepController,
               ),
             ),
-          
+
+            Padding(
+              padding: EdgeInsetsGeometry.all(8),
+              child: CupertinoButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return
+                        AlertDialog(
+                          title: const Text('Endereço'),
+                          content: Column(
+                            children: [
+                              Text('CEP: $cep'),
+                              Text('Logradouro: $logradouro'),
+                              Text('Complemento: $complemento'),
+                              Text('Bairro: $bairro'),
+                              Text('Localidade: $localidade'),
+                              Text('UF: $uf'),
+                            ],
+                          )      
+                        );
+                    });
+                    
+                },
+                child: const Text('Buscar')
+              ),
+            ),
 
           /*
             // Logradouro
