@@ -34,6 +34,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  final cepController = TextEditingController();
+
+  
+
+  @override
+  void dispose() {
+    cepController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   border: OutlineInputBorder(),
                   hintText: 'CEP',
                 ),
+                controller: cepController,
               ),
             ),
+          
 
+          /*
             // Logradouro
             Padding(
               padding: EdgeInsetsGeometry.all(8),
@@ -99,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+            */
           ],
         ),
       )
