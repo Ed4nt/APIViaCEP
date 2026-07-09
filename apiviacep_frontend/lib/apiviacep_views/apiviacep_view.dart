@@ -1,14 +1,7 @@
+import 'package:apiviacep_frontend/apiviacep_models/apiviacep_models.dart';
+import 'package:apiviacep_frontend/apiviacep_repositories/apiviacep_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-
-void main () {
-  runApp (const AppViaCEP());
-}
-
-
 
 class AppViaCEP extends StatelessWidget {
   const AppViaCEP ({super.key});
@@ -41,20 +34,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final cepController = TextEditingController();
 
-  // teste se o dialog funciona
-  late String cep = '01001-000';
-  late String logradouro = 'Av. Fulano de Tal';
-  late String complemento = 'Lado ímpar';
-  late String bairro = 'Sé';
-  late String localidade = 'São Paulo';
-  late String uf = 'SP';
+  void mostrarCEP(BuildContext context) async {
+    CepModel endereco = await pegaEndereco(cepController.text);
+    if (context.mounted) {
+      showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return
+          AlertDialog(
+            title: const Text('Endereço'),
+            content: Column(    
+              mainAxisSize: MainAxisSize.min,                       
+              children: [
+                Text('CEP: ${cepController.text}'),                      
+                Text('Logradouro: ${endereco.logradouro}'),
+                Text('Complemento: ${endereco.complemento}'),
+                Text('Bairro: ${endereco.bairro}'),
+                Text('Localidade: ${endereco.localidade}'),
+                Text('UF: ${endereco.uf}'),
+              ],
+            )
+          );
+      });
+    }
+  }
 
   @override
   void dispose() {
     cepController.dispose();
     super.dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,32 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: EdgeInsets.all(8),
               child: CupertinoButton(
-                onPressed: () async {
-                  Uri url = Uri.parse('[https://viacep.com.br/ws/${cepController.text}/json/]');
-                  await http.get(url);
-                  if (context.mounted) {
-                    showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      
-                      return
-                        AlertDialog(
-                          title: const Text('Endereço'),
-                          content: Column(    
-                            mainAxisSize: MainAxisSize.min,                       
-                            children: [                      
-                              Text('CEP: $cep'),
-                              Text('Logradouro: $logradouro'),
-                              Text('Complemento: $complemento'),
-                              Text('Bairro: $bairro'),
-                              Text('Localidade: $localidade'),
-                              Text('UF: $uf'),
-                            ],
-                          )
-                        );
-                    });
-                  }          
-                },
+                onPressed: () => mostrarCEP(context),
                 child: const Text('Buscar')
               ),
             ),
