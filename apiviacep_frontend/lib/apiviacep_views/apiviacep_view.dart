@@ -30,12 +30,12 @@ class MyHomePage extends StatefulWidget {
 
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+final cepController = TextEditingController();
 
-  final cepController = TextEditingController();
-
-  void mostrarCEP(BuildContext context) async {
+void mostraEndereco(BuildContext context) async {
+  
     CepModel endereco = await pegaEndereco(cepController.text);
+    var cep = cepController.text;
     if (context.mounted) {
       showDialog(
       context: context,
@@ -59,6 +59,45 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  class MyCustomForm extends StatefulWidget {
+    const MyCustomForm ({super.key});
+
+    @override
+    MyCustomFormState createState() {
+      return MyCustomFormState();
+    }
+  }
+
+  class MyCustomFormState extends State<MyCustomForm> {
+    final _formKey = GlobalKey<FormState>();
+
+    @override
+    Widget build(BuildContext context) {
+      return Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'O campo deve ser preenchido';
+                }
+                return null;
+              } ,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'DIGITE O CEP',
+              ),
+              controller: cepController,
+            )
+          ],
+        ),
+      );
+    }
+  }
+
+class _MyHomePageState extends State<MyHomePage> {
+
   @override
   void dispose() {
     cepController.dispose();
@@ -79,19 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
             // CEP
             Padding(
               padding: EdgeInsets.all(8),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'CEP',
-                ),
-                controller: cepController,
-              ),
+              child: MyCustomForm(),
             ),
 
+            // BOTÃO BUSCAR
             Padding(
               padding: EdgeInsets.all(8),
               child: CupertinoButton(
-                onPressed: () => mostrarCEP(context),
+                onPressed: () => mostraEndereco(context),
                 child: const Text('Buscar')
               ),
             ),
