@@ -10,7 +10,7 @@ class CepModel {
     this.complemento,
     this.bairro,
     this.localidade,
-    this.uf,
+    this.uf
   });
 
   factory CepModel.fromJson(Map json) {
