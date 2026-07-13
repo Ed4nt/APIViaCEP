@@ -2,19 +2,17 @@ import 'package:apiviacep_frontend/apiviacep_models/apiviacep_models.dart';
 import 'package:apiviacep_frontend/apiviacep_repositories/apiviacep_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class AppViaCEP extends StatelessWidget {
   const AppViaCEP ({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return CupertinoApp(
       title: 'Consulta endereço',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green)
-
-      ),
-      home: const MyHomePage(title: 'Consulta de Endereço'),
+      theme: CupertinoThemeData(brightness: .light),
+      home: MyHomePage(title: 'Consulta de Endereço')
     );
   }
 }
@@ -41,21 +39,25 @@ class MyCustomFormState extends State<MyCustomForm> {
         children: <Widget>[
           Padding(
             padding: EdgeInsetsGeometry.all(8),
-            child: TextFormField(
-                validator: (value) {
+            child: CupertinoTextField(
+              placeholder: 'DIGITE O CEP',
+                onChanged: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'O campo deve ser preenchido';
+                    SemanticsService.sendAnnouncement(
+                      View.of(context),
+                      'O campo precisa ser preenchido',
+                      Directionality.of(context)
+                    );
                   } else if (value.length < 8 || value.length > 8) {
-                    return 'O CEP digitado é inválido';
+                    SemanticsService.sendAnnouncement(
+                      View.of(context),
+                      'O CEP digitado é inválido',
+                      Directionality.of(context)
+                    );
                   }
-                  return null;
-                } ,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'DIGITE O CEP',
-                ),
-                controller: cepController,
-              )
+                },
+              controller: cepController,
+            )
           ),
 
         Padding(
@@ -136,16 +138,13 @@ class _MyHomePageState extends State<MyHomePage> {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Consulta de Endereço'),
       ),
-      body: Center(
-        child: Column(
-          children: [MyCustomForm()],
-        ),
-      )
+      child: Center(
+        child: MyCustomForm(),
+      ),
     );
   }
 }
