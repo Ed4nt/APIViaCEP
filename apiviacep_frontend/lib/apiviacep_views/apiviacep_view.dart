@@ -2,7 +2,6 @@ import 'package:apiviacep_frontend/apiviacep_models/apiviacep_models.dart';
 import 'package:apiviacep_frontend/apiviacep_repositories/apiviacep_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class AppViaCEP extends StatelessWidget {
   const AppViaCEP ({super.key});
@@ -90,39 +89,28 @@ void botaoMostraEndereco(BuildContext context) async {
       endereco.localidade == '' &&
       endereco.uf == ''
       ) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return
-            AlertDialog(
-              title: const Text('ERRO'),
-              content: Column(
-                children: [
-                  Text('O CEP não foi encontrado')
-                ],
-              ),
-            );
-        }
-      );
+        final snackBar = SnackBar(
+          content: Text('O CEP não foi encontrado'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return
-            AlertDialog(
-              title: const Text('Endereço'),
-              content: Column(    
-                mainAxisSize: MainAxisSize.min,                       
-                children: [
-                  Text('CEP: ${cepController.text}'),                      
-                  Text('Logradouro: ${endereco.logradouro}'),
-                  Text('Complemento: ${endereco.complemento}'),
-                  Text('Bairro: ${endereco.bairro}'),
-                  Text('Localidade: ${endereco.localidade}'),
-                  Text('UF: ${endereco.uf}'),
-                ],
-              )
-            );
+          return AlertDialog(
+            title: const Text('Endereço'),
+            content: Column(    
+              mainAxisSize: MainAxisSize.min,                       
+              children: [
+                Text('CEP: ${cepController.text}'),                      
+                Text('Logradouro: ${endereco.logradouro}'),
+                Text('Complemento: ${endereco.complemento}'),
+                Text('Bairro: ${endereco.bairro}'),
+                Text('Localidade: ${endereco.localidade}'),
+                Text('UF: ${endereco.uf}'),
+              ],
+            )
+          );
         }
       );
     } 
