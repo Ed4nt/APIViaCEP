@@ -39,7 +39,37 @@ class MyCustomFormState extends State<MyCustomForm> {
             child: Column(
               children: [
                 CupertinoTextFormFieldRow(
-                  placeholder: 'DIGITE O CEP',
+                  placeholder: 'Logradouro',
+                  controller: logradouroController,
+                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
+                ),
+
+                CupertinoTextFormFieldRow(
+                  placeholder: 'Número',
+                  controller: numeroController,
+                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
+                ),
+
+                CupertinoTextFormFieldRow(
+                  placeholder: 'Bairro',
+                  controller: bairroController,
+                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
+                ),
+
+                CupertinoTextFormFieldRow(
+                  placeholder: 'Cidade',
+                  controller: cidadeController,
+                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
+                ),
+
+                CupertinoTextFormFieldRow(
+                  placeholder: 'UF',
+                  controller: ufController,
+                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
+                ),
+
+                CupertinoTextFormFieldRow(
+                  placeholder: 'CEP',
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return 'O campo precisa ser preenchido';
@@ -67,6 +97,11 @@ class MyCustomFormState extends State<MyCustomForm> {
 }
 
 final cepController = TextEditingController();
+final logradouroController = TextEditingController();
+final ufController = TextEditingController();
+final cidadeController = TextEditingController();
+final bairroController = TextEditingController();
+final numeroController = TextEditingController();
 
 void botaoMostraEndereco(BuildContext context) async {
   CepModel endereco = await pegaEndereco(cepController.text);
