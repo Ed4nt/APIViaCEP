@@ -1,8 +1,6 @@
 import 'package:apiviacep_frontend/apiviacep_models/apiviacep_models.dart';
 import 'package:apiviacep_frontend/apiviacep_repositories/apiviacep_repository.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class AppViaCEP extends StatelessWidget {
   const AppViaCEP ({super.key});
@@ -37,47 +35,36 @@ class MyCustomFormState extends State<MyCustomForm> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsetsGeometry.all(8),
-            child: CupertinoTextField(
-              placeholder: 'DIGITE O CEP',
-                onChanged: (value) {
-                  if (value == null || value.isEmpty) {
-                    SemanticsService.sendAnnouncement(
-                      View.of(context),
-                      'O campo precisa ser preenchido',
-                      Directionality.of(context)
-                    );
-                  } else if (value.length < 8 || value.length > 8) {
-                    SemanticsService.sendAnnouncement(
-                      View.of(context),
-                      'O CEP digitado é inválido',
-                      Directionality.of(context)
-                    );
-                  }
-                },
-              controller: cepController,
-            )
+          SafeArea( 
+            child: Column(
+              children: [
+                CupertinoTextFormFieldRow(
+                  placeholder: 'DIGITE O CEP',
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'O campo precisa ser preenchido';
+                    } else if (value.length > 8 || value.length < 8) {
+                      return 'Este CEP é inválido';
+                    }
+                  },
+                  controller: cepController,
+                ),
+                CupertinoButton(
+                  onPressed: () {
+                    if(_formKey.currentState!.validate()) {
+                      botaoMostraEndereco(context);
+                    }
+                  },
+                  child: const Text('Buscar'),
+                )
+              ]
+            ),
           ),
-
-        Padding(
-          padding: EdgeInsetsGeometry.all(8),
-          child: CupertinoButton(
-            onPressed: () {
-              if(_formKey.currentState!.validate()) {
-                botaoMostraEndereco(context);
-              }        
-            },
-            child: const Text('Buscar')
-          ),
-        )
-          
         ],
       ),
     );
   }
 }
-
 
 final cepController = TextEditingController();
 
@@ -91,29 +78,41 @@ void botaoMostraEndereco(BuildContext context) async {
       endereco.localidade == '' &&
       endereco.uf == ''
       ) {
-        final snackBar = SnackBar(
-          content: Text('O CEP não foi encontrado'),
+        showCupertinoDialog(
+          context: context,
+          builder: (BuildContext context) => CupertinoAlertDialog(
+            title: const Text('Erro'),
+            content: const Text('O CEP não foi encontrado'),
+            actions: <CupertinoDialogAction>[
+              CupertinoDialogAction(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Ok')
+              )
+            ],
+          )
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      showDialog(
+      showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Endereço'),
-            content: Column(    
-              mainAxisSize: MainAxisSize.min,                       
-              children: [
-                Text('CEP: ${cepController.text}'),                      
-                Text('Logradouro: ${endereco.logradouro}'),
-                Text('Complemento: ${endereco.complemento}'),
-                Text('Bairro: ${endereco.bairro}'),
-                Text('Localidade: ${endereco.localidade}'),
-                Text('UF: ${endereco.uf}'),
-              ],
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('Endereço'),
+          content: Column(
+            children: [
+              Text('CEP: ${cepController.text}'),                      
+              Text('Logradouro: ${endereco.logradouro}'),
+              Text('Complemento: ${endereco.complemento}'),
+              Text('Bairro: ${endereco.bairro}'),
+              Text('Localidade: ${endereco.localidade}'),
+              Text('UF: ${endereco.uf}'),
+            ],
+          ),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Ok')
             )
-          );
-        }
+          ],
+        )
       );
     } 
   }
