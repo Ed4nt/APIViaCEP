@@ -4,13 +4,15 @@ class CepModel {
   String? bairro;
   String? localidade;
   String? uf;
+  String? erro;
 
   CepModel({
     this.logradouro,
     this.complemento,
     this.bairro,
     this.localidade,
-    this.uf
+    this.uf,
+    this.erro
   });
 
   factory CepModel.fromJson(Map json) {
@@ -20,6 +22,7 @@ class CepModel {
       bairro: json['bairro'] ?? '',
       localidade: json['localidade'] ?? '',
       uf: json['uf'] ?? '',
+      erro: json['erro'] ?? ''
     ); 
   }
 }

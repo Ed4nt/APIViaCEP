@@ -9,19 +9,3 @@ Future<CepModel> pegaEndereco(String cep) async {
   CepModel endereco = CepModel.fromJson(json);
   return endereco;
 }
-
-Future<CepModel> pegaCep(String uf, String cidade, String logradouro, String bairro) async {
-  if (bairro.isEmpty) {
-    Uri uri = Uri.parse('https://viacep.com.br/ws/$uf/$cidade/$logradouro/json/');
-    http.Response response = await http.get(uri);
-    Map json = jsonDecode(response.body);
-    CepModel endereco = CepModel.fromJson(json);
-    return endereco;
-  } else {
-    Uri uri = Uri.parse('https://viacep.com.br/ws/$uf/$cidade/$logradouro+$bairro/json/');
-    http.Response response = await http.get(uri);
-    Map json = jsonDecode(response.body);
-    CepModel endereco = CepModel.fromJson(json);
-    return endereco;
-  }
-}

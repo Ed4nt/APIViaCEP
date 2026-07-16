@@ -2,12 +2,19 @@ import 'package:apiviacep_frontend/apiviacep_models/apiviacep_models.dart';
 import 'package:apiviacep_frontend/apiviacep_repositories/apiviacep_repository.dart';
 import 'package:flutter/cupertino.dart';
 
-class AppViaCEP extends StatelessWidget {
-  const AppViaCEP ({super.key});
+// Esse é o widget raiz que é chamado pelo metodo runApp no main.dart, ele define as opções gerais
+// do app como: título, tema e página inicial do app
+// A classe StatelessWidget indica que o widget não tem sua estrutura visual alterada mantendo-se estática
+class AppViaCEP extends StatelessWidget { 
+  const AppViaCEP ({super.key}); 
 
+  // Aqui o método build é sobreescrito para retornar as características do app
+  // Toda classe que herda um Widget precisa implementar o método widget
+  // ele descreve a parte da interface representada por este widget
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+  // A classe BuildContext indica a localização do widget na arvore de widgets
+    return CupertinoApp( // Foi escolhido o CupertinoApp para ter uma estática similar ao iOS
       title: 'Consulta endereço',
       theme: CupertinoThemeData(brightness: .light),
       home: MyHomePage(title: 'Consulta de Endereço')
@@ -38,36 +45,6 @@ class MyCustomFormState extends State<MyCustomForm> {
           SafeArea( 
             child: Column(
               children: [
-                CupertinoTextFormFieldRow(
-                  placeholder: 'Logradouro',
-                  controller: logradouroController,
-                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
-                ),
-
-                CupertinoTextFormFieldRow(
-                  placeholder: 'Número',
-                  controller: numeroController,
-                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
-                ),
-
-                CupertinoTextFormFieldRow(
-                  placeholder: 'Bairro',
-                  controller: bairroController,
-                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
-                ),
-
-                CupertinoTextFormFieldRow(
-                  placeholder: 'Cidade',
-                  controller: cidadeController,
-                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
-                ),
-
-                CupertinoTextFormFieldRow(
-                  placeholder: 'UF',
-                  controller: ufController,
-                  validator: (value) => (value == null || value.isEmpty) ? 'O campo deve ser preenchido' : null,
-                ),
-
                 CupertinoTextFormFieldRow(
                   placeholder: 'CEP',
                   validator: (String? value) {
