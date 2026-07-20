@@ -1,6 +1,7 @@
 import 'package:apiviacep_frontend/apiviacep_models/apiviacep_models.dart';
 import 'package:apiviacep_frontend/apiviacep_repositories/apiviacep_repository.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 // Esse é o widget raiz que é chamado pelo metodo runApp no main.dart, ele define as opções gerais
 // do app como: título, tema e página inicial do app
@@ -36,52 +37,16 @@ class MyHomePage extends StatefulWidget {
 
 class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
-  
+
+  final cepController = TextEditingController();
+
   @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          SafeArea( 
-            child: Column(
-              children: [
-                CupertinoTextFormFieldRow(
-                  placeholder: 'CEP',
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'O campo precisa ser preenchido';
-                    } else if (value.length > 8 || value.length < 8) {
-                      return 'Este CEP é inválido';
-                    }
-                  },
-                  controller: cepController,
-                ),
-                CupertinoButton(
-                  onPressed: () {
-                    if(_formKey.currentState!.validate()) {
-                      botaoMostraEndereco(context);
-                    }
-                  },
-                  child: const Text('Buscar'),
-                )
-              ]
-            ),
-          ),
-        ],
-      ),
-    );
+  void dispose() {
+    cepController.dispose();
+    super.dispose();
   }
-}
 
-final cepController = TextEditingController();
-final logradouroController = TextEditingController();
-final ufController = TextEditingController();
-final cidadeController = TextEditingController();
-final bairroController = TextEditingController();
-final numeroController = TextEditingController();
-
-void botaoMostraEndereco(BuildContext context) async {
+  void botaoMostraEndereco(BuildContext context) async {
   CepModel endereco = await pegaEndereco(cepController.text);
   if (context.mounted) {
     if (
@@ -130,6 +95,47 @@ void botaoMostraEndereco(BuildContext context) async {
     } 
   }
 }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          SafeArea( 
+            child: Column(
+              children: [
+                CupertinoTextFormFieldRow(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  placeholder: 'CEP',
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'O campo precisa ser preenchido';
+                    } else if (value.length != 8) {
+                      return 'Este CEP é inválido';
+                    }
+                  },
+                  controller: cepController,
+                ),
+                CupertinoButton(
+                  onPressed: () {
+                    if(_formKey.currentState!.validate()) {
+                      botaoMostraEndereco(context);
+                    }
+                  },
+                  child: const Text('Buscar'),
+                )
+              ]
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class MyCustomForm extends StatefulWidget {
   const MyCustomForm ({super.key});
@@ -142,12 +148,6 @@ class MyCustomForm extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  @override
-  void dispose() {
-    cepController.dispose();
-    super.dispose();
-  }
-  
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
