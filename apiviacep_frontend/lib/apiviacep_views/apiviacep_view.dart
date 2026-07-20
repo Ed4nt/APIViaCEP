@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 // Esse é o widget raiz que é chamado pelo metodo runApp no main.dart, ele define as opções gerais
 // do app como: título, tema e página inicial do app
-// A classe StatelessWidget indica que o widget não tem sua estrutura visual alterada mantendo-se estática
+// Estendemos a classe StatelessWidget, ela indica que o widget não tem sua estrutura visual alterada mantendo-se estática
 class AppViaCEP extends StatelessWidget { 
   const AppViaCEP ({super.key}); 
 
@@ -14,20 +14,21 @@ class AppViaCEP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   // A classe BuildContext indica a localização do widget na arvore de widgets
-    return CupertinoApp( // Foi escolhido o CupertinoApp para ter uma estática similar ao iOS
+    return CupertinoApp( // Foi escolhido o CupertinoApp para ter uma estética similar ao iOS
       title: 'Consulta endereço',
       theme: CupertinoThemeData(brightness: .light),
-      home: MyHomePage(title: 'Consulta de Endereço')
+      home: MyHomePage(title: 'Consulta de Endereço',) // O argumento title vem da classe MyHomePage
     );
   }
 }
 
-
+// A classe MyHomePage estende o statefull widget indicando que sua estrutura visual pode ser alterada
 class MyHomePage extends StatefulWidget {
   const MyHomePage ({super.key, required this.title});
 
   final String title;
 
+  // Sobreescreve o método createState da classe StatefullWidget
   @override
   State<StatefulWidget> createState() => _MyHomePageState();
 
