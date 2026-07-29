@@ -22,7 +22,7 @@ class CepModel {
       bairro: json['bairro'] ?? '',
       localidade: json['localidade'] ?? '',
       uf: json['uf'] ?? '',
-      erro: json['erro'] ?? ''
+      erro: json['erro'] ?? 'false'
     ); 
   }
 }

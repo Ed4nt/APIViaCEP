@@ -1,4 +1,4 @@
-import 'package:apiviacep_frontend/apiviacep_models/apiviacep_models.dart';
+import 'package:apiviacep_frontend/apiviacep_models/cep_model.dart';
 import 'package:apiviacep_frontend/apiviacep_repositories/apiviacep_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -50,11 +50,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   CepModel endereco = await pegaEndereco(cepController.text);
   if (context.mounted) {
     if (
-      endereco.logradouro == '' &&
-      endereco.bairro == '' &&
-      endereco.complemento == '' &&
-      endereco.localidade == '' &&
-      endereco.uf == ''
+      endereco.erro == 'false'
       ) {
         showCupertinoDialog(
           context: context,
